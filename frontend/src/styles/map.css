@@ -1,0 +1,98 @@
+/* map.css — Leaflet map overrides & custom animation keyframes */
+
+.leaflet-container {
+  border-radius: 0.85rem;
+  z-index: 1;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.map-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1.5px solid #e4e6ea;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  background: #f8fafc;
+}
+
+/* Animations */
+@keyframes pulse-ring {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes sos-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes buzzer-pulse {
+  0% { transform: scale(1); box-shadow: 0 0 8px rgba(220, 38, 38, 0.7); }
+  100% { transform: scale(1.15); box-shadow: 0 0 20px rgba(220, 38, 38, 1); }
+}
+
+/* Custom Marker Hover Effects */
+.custom-map-icon {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.custom-map-icon:hover {
+  transform: scale(1.15);
+  z-index: 999 !important;
+}
+
+/* Popup Styles */
+.custom-map-popup .leaflet-popup-content-wrapper {
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  padding: 0;
+  border: 1px solid #e2e8f0;
+}
+
+.custom-map-popup .leaflet-popup-content {
+  margin: 12px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #1e293b;
+}
+
+.custom-map-popup .leaflet-popup-tip {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Route Badge Float */
+.map-route-indicator {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 14px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.82rem;
+}
+
+.map-control-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #1e293b;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  transition: all 0.15s;
+}
+
+.map-control-btn:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
