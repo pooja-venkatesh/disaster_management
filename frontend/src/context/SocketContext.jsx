@@ -5,21 +5,23 @@ import { useAuth } from './AuthContext';
 const SocketContext = createContext(null);
 
 export const SocketProvider = ({ children }) => {
-  const { user }    = useAuth();
-  const socketRef   = useRef(null);
+  const { user } = useAuth();
+  const socketRef = useRef(null);
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    if (!user) {
+    const socketUrl = import.meta.env.VITE_SOCKET_URL;
+
+    if (!user || !socketUrl) {
       if (socketRef.current) {
         socketRef.current.disconnect();
         socketRef.current = null;
-        setConnected(false);
       }
+      setConnected(false);
       return;
     }
 
-    const socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000', {
+    const socket = io(socketUrl, {
       withCredentials: true,
       transports: ['websocket', 'polling'],
     });
@@ -27,12 +29,9 @@ export const SocketProvider = ({ children }) => {
     socket.on('connect', () => {
       socket.emit('auth', user.user_id);
       setConnected(true);
-      console.log('[Socket] Connected as user', user.user_id);
     });
 
-    socket.on('disconnect', () => {
-      setConnected(false);
-    });
+    socket.on('disconnect', () => setConnected(false));
 
     socketRef.current = socket;
 
