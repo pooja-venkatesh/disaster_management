@@ -38,6 +38,9 @@ const ROLE_HOME = {
   admin:   '/admin/dashboard',
 };
 
+// Backend sends roles in capitals (VICTIM), so convert to lowercase before using
+const roleKey = (r) => String(r || '').toLowerCase();
+
 const PageLoader = () => (
   <div style={{ minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'12px' }}>
     <div style={{ width:36, height:36, border:'3px solid #e5e7eb', borderTopColor:'#EF3333', borderRadius:'50%', animation:'spin 0.8s linear infinite' }} />
@@ -50,23 +53,25 @@ const ProtectedRoute = ({ children, allowedRole }) => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
   if (!user)   return <Navigate to="/login" replace />;
-  if (allowedRole && user.role !== allowedRole)
-    return <Navigate to={ROLE_HOME[user.role] || '/login'} replace />;
+  const role = roleKey(user.role);
+  if (allowedRole && role !== allowedRole)
+    return <Navigate to={ROLE_HOME[role] || '/login'} replace />;
   return children;
 };
 
 const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
-  if (user)    return <Navigate to={ROLE_HOME[user.role]} replace />;
+  const home = user && ROLE_HOME[roleKey(user.role)];
+  if (home) return <Navigate to={home} replace />;
   return children;
 };
 
 const SmartRoot = () => {
   const { user, loading } = useAuth();
   if (loading) return <PageLoader />;
-  if (!user)   return <Navigate to="/login" replace />;
-  return <Navigate to={ROLE_HOME[user.role]} replace />;
+  const home = user && ROLE_HOME[roleKey(user.role)];
+  return <Navigate to={home || '/login'} replace />;
 };
 
 const AppRoutes = () => (
