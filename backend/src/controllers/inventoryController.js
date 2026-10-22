@@ -73,7 +73,7 @@ const updateInventory = async (req, res) => {
 const getAllInventory = async (req, res) => {
   try {
     const [rows] = await pool.query(
-      `SELECT si.*, sp.shelter_name, sp.is_verified, u.name AS owner_name
+      `SELECT si.*, sp.shelter_name, sp.is_verified, u.full_name AS owner_name
        FROM shelter_inventory si
        JOIN shelter_profiles sp ON sp.shelter_id = si.shelter_id
        JOIN users u ON u.user_id = sp.user_id

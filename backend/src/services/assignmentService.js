@@ -76,7 +76,7 @@ const assignToShelter = async (conn, { requestId, shelterId, sequenceNo }) => {
 
   // Emit real-time to shelter user
   const [reqRow] = await conn.query(
-    `SELECT er.*, u.name AS victim_name FROM emergency_requests er
+    `SELECT er.*, u.full_name AS victim_name FROM emergency_requests er
      JOIN users u ON u.user_id = er.victim_id WHERE er.request_id = ?`,
     [requestId]
   );
@@ -174,7 +174,7 @@ const handleRejection = async ({ assignmentId, requestId, shelterNotes }) => {
     );
 
     const [reqRows] = await conn.query(
-      `SELECT er.*, ra.sequence_no, u.email AS victim_email, u.name AS victim_name
+      `SELECT er.*, ra.sequence_no, u.email AS victim_email, u.full_name AS victim_name
        FROM emergency_requests er
        LEFT JOIN request_assignments ra ON ra.assignment_id = er.current_assignment_id
        JOIN users u ON u.user_id = er.victim_id

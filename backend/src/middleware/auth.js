@@ -29,7 +29,7 @@ const authenticate = async (req, res, next) => {
 
     // Fetch fresh user data from DB (catches deactivated accounts mid-session)
     const [rows] = await pool.query(
-      'SELECT user_id, name, email, phone, role, is_active, email_verified FROM users WHERE user_id = ?',
+      'SELECT user_id, full_name AS name, email, phone, role, is_active, email_verified FROM users WHERE user_id = ?',
       [decoded.userId]
     );
 
@@ -70,7 +70,7 @@ const authorizeRoles = (...roles) => {
       return res.status(401).json({ success: false, message: 'Unauthenticated.' });
     }
 
-    if (!roles.includes(req.user.role)) {
+    if (!roles.map(r => String(r).toLowerCase()).includes(String(req.user.role).toLowerCase())) {
       return res.status(403).json({
         success: false,
         message: `Access denied. This route is restricted to: ${roles.join(', ')}.`,

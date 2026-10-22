@@ -6,7 +6,7 @@ const socketSvc = require('../services/socketService');
 const getProfile = async (req, res) => {
   try {
     const [rows] = await pool.query(
-      `SELECT sp.*, u.name, u.email, u.phone
+      `SELECT sp.*, u.full_name AS name, u.email, u.phone
        FROM shelter_profiles sp
        JOIN users u ON u.user_id = sp.user_id
        WHERE sp.user_id = ?`,
@@ -113,7 +113,7 @@ const getShelterDashboard = async (req, res) => {
       `SELECT ra.assignment_id, ra.assigned_at, ra.sequence_no,
               er.request_id, er.type, er.title, er.priority, er.address,
               er.description, er.latitude, er.longitude,
-              u.name AS victim_name, u.phone AS victim_phone
+              u.full_name AS victim_name, u.phone AS victim_phone
        FROM request_assignments ra
        JOIN emergency_requests er ON er.request_id = ra.request_id
        JOIN users u               ON u.user_id = er.victim_id
@@ -159,7 +159,7 @@ const getShelterRequests = async (req, res) => {
               er.children_present, er.elderly_present, er.injured, er.urgent_medical,
               er.description, er.address, er.latitude, er.longitude,
               er.status AS request_status, er.created_at,
-              u.name AS victim_name, u.phone AS victim_phone, u.email AS victim_email,
+              u.full_name AS victim_name, u.phone AS victim_phone, u.email AS victim_email,
               -- compute distance from shelter
               sp_self.latitude AS shelter_lat, sp_self.longitude AS shelter_lng,
               ROUND((6371 * ACOS(
@@ -245,7 +245,7 @@ const acceptRequest = async (req, res) => {
 
     // Get shelter info for email
     const [shelterInfo] = await conn.query(
-      `SELECT sp.shelter_name, sp.address, u.email AS victim_email, u.name AS victim_name
+      `SELECT sp.shelter_name, sp.address, u.email AS victim_email, u.full_name AS victim_name
        FROM shelter_profiles sp
        JOIN emergency_requests er ON er.request_id = ?
        JOIN users u ON u.user_id = er.victim_id
@@ -389,7 +389,7 @@ const getShelterHistory = async (req, res) => {
               ra.assigned_at, ra.responded_at, ra.shelter_notes,
               er.request_id, er.type, er.title, er.priority,
               er.status AS request_status, er.created_at,
-              u.name AS victim_name
+              u.full_name AS victim_name
        FROM request_assignments ra
        JOIN emergency_requests er ON er.request_id = ra.request_id
        JOIN users u               ON u.user_id = er.victim_id

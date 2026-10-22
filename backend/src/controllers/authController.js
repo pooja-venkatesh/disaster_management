@@ -10,7 +10,7 @@ const verification = require('../services/verificationService');
 // ─────────────────────────────────────────────────────────────────────
 const safeUser = (user) => ({
   user_id:    user.user_id,
-  name:       user.name,
+  name: user.name || user.full_name,
   email:      user.email,
   phone:      user.phone || null,
   role:       user.role,
@@ -375,7 +375,7 @@ const forgotPassword = async (req, res) => {
 
     const resetUrl = `${clientUrl()}/reset-password?token=${r.token}`;
     try {
-      await email.sendPasswordReset({ to: user.email, name: user.name, resetUrl, ttlMinutes: verification.RESET_TTL_MINUTES });
+      await email.sendPasswordReset({ to: user.email, name: user.name || user.full_name, resetUrl, ttlMinutes: verification.RESET_TTL_MINUTES });
     } catch (err) {
       console.error('[Auth] Password reset email failed:', err.message);
       // Nothing was delivered: drop the token so the user can retry immediately.
@@ -435,7 +435,7 @@ const resetPassword = async (req, res) => {
       let usable = !!t && !t.used_at && Number(t.expired) !== 1;
 
       if (usable) {
-        const [urows] = await conn.query('SELECT user_id, name, email, is_active FROM users WHERE user_id = ?', [t.user_id]);
+        const [urows] = await conn.query('SELECT user_id, full_name AS name, email, is_active FROM users WHERE user_id = ?', [t.user_id]);
         account = urows[0];
         usable = !!account && !!account.is_active;
       }

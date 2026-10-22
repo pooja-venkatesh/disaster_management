@@ -74,28 +74,28 @@ const AdminDashboard = () => {
                 { label: 'Fulfilled', value: data?.requestStats?.fulfilled,      cls: 'stat-card--purple' },
                 { label: 'Unresolved',value: data?.requestStats?.unresolved,     cls: 'stat-card--red' },
               ].map((s) => (
-                <div key={s.label} className={`stat-card ${s.cls}`}>
+                <Link key={s.label} to={s.label === 'Unresolved' ? '/admin/unresolved' : '/admin/requests'} className={`stat-card ${s.cls}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                   <div className="stat-number">{s.value ?? 0}</div>
                   <div className="stat-label">{s.label}</div>
-                </div>
+                </Link>
               ))}
             </div>
 
             {/* Shelters */}
             <h2 style={{ fontSize: '0.82rem', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.75rem' }}>Shelters</h2>
             <div className="stat-row" style={{ marginBottom: '1.75rem' }}>
-              <div className="stat-card stat-card--gray">
+              <Link to="/admin/shelters" className="stat-card stat-card--gray" style={{ textDecoration: \'none\', color: \'inherit\' }}>
                 <div className="stat-number">{data?.shelterStats?.total_shelters ?? 0}</div>
                 <div className="stat-label">Total Shelters</div>
-              </div>
-              <div className="stat-card stat-card--green">
+              </Link>
+              <Link to="/admin/shelters" className="stat-card stat-card--green" style={{ textDecoration: \'none\', color: \'inherit\' }}>
                 <div className="stat-number">{data?.shelterStats?.verified ?? 0}</div>
                 <div className="stat-label">Verified</div>
-              </div>
-              <div className="stat-card stat-card--orange">
+              </Link>
+              <Link to="/admin/shelters" className="stat-card stat-card--orange" style={{ textDecoration: \'none\', color: \'inherit\' }}>
                 <div className="stat-number">{data?.shelterStats?.pending_verification ?? 0}</div>
                 <div className="stat-label">Pending Verification</div>
-              </div>
+              </Link>
             </div>
 
             {/* Recent Unresolved */}

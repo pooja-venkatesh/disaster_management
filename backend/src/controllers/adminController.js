@@ -35,7 +35,7 @@ const getAdminDashboard = async (req, res) => {
 
     const [recentUnresolved] = await pool.query(
       `SELECT er.request_id, er.type, er.title, er.priority, er.created_at,
-              u.name AS victim_name, u.phone AS victim_phone
+              u.full_name AS victim_name, u.phone AS victim_phone
        FROM emergency_requests er
        JOIN users u ON u.user_id = er.victim_id
        WHERE er.status = 'unresolved'
@@ -68,7 +68,7 @@ const getAllShelters = async (req, res) => {
     if (verified === 'false') { whereClause = 'WHERE sp.is_verified = FALSE'; }
 
     const [rows] = await pool.query(
-      `SELECT sp.*, u.name, u.email, u.phone, u.is_active,
+      `SELECT sp.*, u.full_name AS name, u.email, u.phone, u.is_active,
               adm.name AS verified_by_name
        FROM shelter_profiles sp
        JOIN users u ON u.user_id = sp.user_id
@@ -181,7 +181,7 @@ const getAllRequests = async (req, res) => {
 
     const [rows] = await pool.query(
       `SELECT er.*,
-              u.name  AS victim_name, u.phone AS victim_phone,
+              u.full_name  AS victim_name, u.phone AS victim_phone,
               sp.shelter_name AS current_shelter,
               sp.latitude AS shelter_latitude, sp.longitude AS shelter_longitude, sp.shelter_id
        FROM emergency_requests er
@@ -208,7 +208,7 @@ const getUnresolvedRequests = async (req, res) => {
   try {
     const [rows] = await pool.query(
       `SELECT er.*,
-              u.name AS victim_name, u.phone AS victim_phone, u.email AS victim_email,
+              u.full_name AS victim_name, u.phone AS victim_phone, u.email AS victim_email,
               COUNT(ra.assignment_id) AS shelters_tried
        FROM emergency_requests er
        JOIN users u ON u.user_id = er.victim_id
