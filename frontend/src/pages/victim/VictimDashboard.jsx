@@ -87,7 +87,6 @@ const VictimDashboard = () => {
                     <tr>
                       <th>Type</th>
                       <th>Title</th>
-                      <th>Priority</th>
                       <th>Status</th>
                       <th>Current Shelter</th>
                       <th>Date</th>
@@ -102,7 +101,6 @@ const VictimDashboard = () => {
                             {r.title}
                           </Link>
                         </td>
-                        <td><span className={`priority--${r.priority}`}>{r.priority}</span></td>
                         <td><span className={`badge badge--${r.status}`}>{r.status}</span></td>
                         <td style={{ color: '#6b7280', fontSize: '0.8rem' }}>{r.current_shelter || '—'}</td>
                         <td style={{ color: '#6b7280', fontSize: '0.78rem' }}>

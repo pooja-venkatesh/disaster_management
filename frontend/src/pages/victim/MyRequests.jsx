@@ -74,7 +74,6 @@ const MyRequests = () => {
                   <th>#</th>
                   <th>Type</th>
                   <th>Title</th>
-                  <th>Priority</th>
                   <th>Status</th>
                   <th>Current Shelter</th>
                   <th>Submitted</th>
@@ -91,7 +90,6 @@ const MyRequests = () => {
                         {r.title}
                       </Link>
                     </td>
-                    <td><span className={`priority--${r.priority}`}>{r.priority}</span></td>
                     <td><span className={`badge badge--${r.status}`}>{r.status}</span></td>
                     <td style={{ fontSize: '0.8rem', color: '#6b7280' }}>{r.current_shelter_name || '—'}</td>
                     <td style={{ fontSize: '0.78rem', color: '#6b7280' }}>

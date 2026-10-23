@@ -47,7 +47,6 @@ const RequestDetail = () => {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
             <span className={`badge badge--${req.status}`} style={{ fontSize: '0.82rem', padding: '0.3rem 0.9rem' }}>{req.status}</span>
-            <span className={`priority--${req.priority}`} style={{ fontSize: '0.8rem', fontWeight: 600 }}>{req.priority} priority</span>
           </div>
         </div>
 
