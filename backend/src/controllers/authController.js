@@ -129,12 +129,12 @@ const register = async (req, res) => {
     if (existing.length > 0) {
       userId = existing[0].user_id;
       await pool.query(
-        'UPDATE users SET name = ?, password_hash = ?, phone = ?, role = ? WHERE user_id = ? AND email_verified = 0',
+        'UPDATE users SET full_name = ?, password_hash = ?, phone = ?, role = ? WHERE user_id = ? AND email_verified = 0',
         [name.trim(), password_hash, phone || null, role, userId]
       );
     } else {
       const [result] = await pool.query(
-        'INSERT INTO users (name, email, password_hash, phone, role, email_verified) VALUES (?, ?, ?, ?, ?, 0)',
+        'INSERT INTO users (full_name, email, password_hash, phone, role, email_verified) VALUES (?, ?, ?, ?, ?, 0)',
         [name.trim(), normEmail, password_hash, phone || null, role]
       );
       userId = result.insertId;
